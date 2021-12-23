@@ -3,19 +3,6 @@ import './employees-list-item.css';
 
 const EmployeesListItem = (props) => {
 
-
-    // onIncrease = () => (
-    //     this.setState(({increase}) => ({
-    //         increase: !increase
-    //     }))
-    // )
-
-    // onLike = () => (
-    //     this.setState(({like}) => ({
-    //         like: !like
-    //     }))
-    // )
-
     
         const { name, salary, increase, like, onDelete, onIncrease } = props
         // const {increase, like} = this.state

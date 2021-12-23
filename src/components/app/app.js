@@ -12,10 +12,12 @@ class App extends Component{
     super(props)
     this.state = {
       data: [
-      { name: 'Kuryndin Dmitry', salary: 95000, increase: false, like: false, id: 1 },
-      { name: 'Kanavina Alexandra', salary: 85000, increase: false, like: false, id: 2 },
-      { name: 'Gorohova Irina', salary: 100000, increase: false, like: false, id: 3}
-      ]
+      { name: 'Дмитрий Иванов', salary: 95000, increase: true, like: false, id: 1 },
+      { name: 'Кристина Дмитриевна', salary: 105000, increase: false, like: true, id: 2 },
+      { name: 'Арсен Бронсон', salary: 120000, increase: false, like: false, id: 3}
+      ],
+      term: '',
+      filter: 'all'
     }
   }
 
@@ -51,22 +53,55 @@ class App extends Component{
     }))
   }
 
+  searchEmployees = (term, items) => {
+    if (term.length === '') {
+      return items
+    } 
+    
+    return items.filter(item => {
+      return item.name.indexOf(term) > -1
+    })
+  }
+
+  onTerm = (term) => {
+    this.setState({term})
+  }
+
+  onUpdateFilter = (filter) => {
+    this.setState({filter})
+  }
+
+  filterEmployees = (filter, items) => {
+    switch (filter) {
+      case 'like':
+        return items.filter((item) => item.like)
+      case 'moreSalary1000':
+        return items.filter((item) => item.salary > 100000)
+      case 'all':
+        return items
+      default:
+        return items
+    }
+  }
+
   render() {
-    const { data } = this.state
+    const { data, term, filter } = this.state
     const employees = data.length
     const increased = data.filter(item => item.increase).length
+
+    const currentData = this.filterEmployees(filter, this.searchEmployees(term, data))
 
     return (
       <div className="app">
         <AppInfo employees={employees} increased={increased}/>
   
           <div className="search-panel">
-              <SearchPanel/>
-              <AppFilter/>
+            <SearchPanel onTerm={this.onTerm}/>
+            <AppFilter onUpdateFilter={this.onUpdateFilter} filter={filter}/>
           </div>
           
         <EmployeesList
-          data={data}
+          data={currentData}
           onDelete={this.deleteItem}
           onIncrease={this.onIncrease}/>
         <EmployeesAddForm onAdd={this.addItem}/>

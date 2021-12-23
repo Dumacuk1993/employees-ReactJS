@@ -13,6 +13,11 @@ const EmployeesList = ({data, onDelete, onIncrease}) => {
                     onIncrease={(e) => onIncrease(id, e.currentTarget.getAttribute('data-toggle'))}/>
     })
 
+    if (employees.length === 0) {
+        return (
+            <h2 className="alert">Таких сотрудников не найдено!</h2>  
+        )
+    }
 
     return (
         <ul className="app-list list-group">
